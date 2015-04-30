@@ -23,7 +23,8 @@ ActiveRecord::Schema.define(version: 20121230220019) do
   create_table "sub_categories", force: :cascade do |t|
     t.integer  "category_id"
     t.text     "name"
-    t.text     "slug"
+    t.text     "slug",        null: false
+    t.text     "fields"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

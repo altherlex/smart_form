@@ -3,7 +3,8 @@ class CreateSubCategories < ActiveRecord::Migration
     create_table :sub_categories do |t|
       t.references :category
       t.text :name
-      t.text :slug
+      t.text :slug, :unique => true, :null => false
+      t.text :fields
 
       t.timestamps
     end
