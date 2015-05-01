@@ -1,0 +1,107 @@
+#contacts
+  %table.table
+    %td.order
+      %input{type:"hidden", id:"id-field"}
+      %input#order-field{type:"text", placeholder:"order", required:'required'}
+    %td.title
+      %input#title-field{type:"text", placeholder:"title", required:'required'}
+    %td.type
+      %input#type-field{type:"text", placeholder:"type", required:'required'}
+    %td.values
+      %input#values-field{type:"text", placeholder:"values"}
+    %td.add
+      %button.add-btn Add
+      %button.edit-btn Edit  
+  %table.table
+    %thead
+      %tr
+        %th.sort{:'data-sort'=>"order"} order
+        %th.sort{:'data-sort'=>"title"} title
+        %th.sort{:'data-sort'=>"type"} type
+        %th.sort{:'data-sort'=>"values"} values
+        %th.sort{colspan:"2"}
+    %tbody.list
+      %tr
+        %td.id{style:"display:none;"} 1
+        %td.order Jonny
+        %td.title 27
+        %td.type Stockholm
+        %td.values Stockholm
+        %td.edit
+          %button.edit-item-btn Edit
+        %td.remove
+          %button.remove-item-btn Remove
+
+:javascript
+  var options = {
+      valueNames: [ 'id', 'order', 'title', 'type', 'values' ]
+    };
+
+    // Init list
+    var contactList = new List('contacts', options);
+
+    var idField = $('#id-field'),
+        nameField = $('#order-field'),
+        ageField = $('#title-field'),
+        cityField = $('#type-field'),
+        cityFieldd = $('#values-field'),
+        addBtn = $('#add-btn'),
+        editBtn = $('#edit-btn').hide(),
+        removeBtns = $('.remove-item-btn'),
+        editBtns = $('.edit-item-btn');
+
+    // Sets callbacks to the buttons in the list
+    refreshCallbacks();
+
+    addBtn.click(function() {
+      contactList.add({
+        id: Math.floor(Math.random()*110000),
+        name: nameField.val(),
+        age: ageField.val(),
+        city: cityField.val()
+      });
+      clearFields();
+      refreshCallbacks();
+    });
+
+    editBtn.click(function() {
+      var item = contactList.get('id', idField.val())[0];
+      item.values({
+        id:idField.val(),
+        name: nameField.val(),
+        age: ageField.val(),
+        city: cityField.val()
+      });
+      clearFields();
+      editBtn.hide();
+      addBtn.show();
+    });
+
+    function refreshCallbacks() {
+      // Needed to add new buttons to jQuery-extended object
+      removeBtns = $(removeBtns.selector);
+      editBtns = $(editBtns.selector);
+      
+      removeBtns.click(function() {
+        var itemId = $(this).closest('tr').find('.id').text();
+        contactList.remove('id', itemId);
+      });
+      
+      editBtns.click(function() {
+        var itemId = $(this).closest('tr').find('.id').text();
+        var itemValues = contactList.get('id', itemId)[0].values();
+        idField.val(itemValues.id);
+        nameField.val(itemValues.name);
+        ageField.val(itemValues.age);
+        cityField.val(itemValues.city);
+        
+        editBtn.show();
+        addBtn.hide();
+      });
+    }
+
+    function clearFields() {
+      nameField.val('');
+      ageField.val('');
+      cityField.val('');
+    }

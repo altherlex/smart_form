@@ -1,0 +1,9 @@
+{
+  "name": "smart_form",
+  "version": "0.0.1",
+  "dependencies": {
+    "jquery": "master",
+    "list.js": "master",
+    "bootstrap": "master"
+  }
+}

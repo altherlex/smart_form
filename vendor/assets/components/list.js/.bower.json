@@ -1,0 +1,36 @@
+{
+  "name": "list.js",
+  "main": "dist/list.js",
+  "homepage": "http://listjs.com",
+  "authors": [
+    "Jonny Strömberg <jonny.stromberg@gmail.com>"
+  ],
+  "description": "Add search, sort and flexibility to plain HTML lists or tables with cross-browser native JavaScript.",
+  "keywords": [
+    "list",
+    "search",
+    "sort",
+    "table",
+    "dom",
+    "html",
+    "ui"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "components",
+    "test",
+    "tests"
+  ],
+  "_release": "8c1c6fd128",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "8c1c6fd12862d0217198a3d6ff2d5b79f7b78c52"
+  },
+  "_source": "git://github.com/javve/list.js.git",
+  "_target": "master",
+  "_originalSource": "list.js"
+}

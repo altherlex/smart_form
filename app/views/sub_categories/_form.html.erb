@@ -10,7 +10,9 @@
       </ul>
     </div>
   <% end %>
-
+  <div class="actions">
+    <%= f.submit %>
+  </div>
   <div class="field">
     <%= f.label :category %><br>
     <%= f.collection_select(:category_id, Category.all, :id, :name, {:include_blank => true, :require=>'require'}) %>
@@ -25,16 +27,6 @@
   </div>
   <div class="field">
     <%= f.label :fields %><br>
-    <%=text_field_tag :order, nil, type: :text, placeholder: "order", required:'required'%>
-    <%=text_field_tag :title, nil, type: :text, placeholder: "title", required:'required'%>
-    <%=text_field_tag :type, nil, type: :text, placeholder: "type", required:'required'%>
-    <%=text_field_tag :values, nil, type: :text, placeholder: "values"%>
-    <button id="add-btn" style="display: inline-block;">Add</button>
-    <button id="edit-btn" style="display: none;">Edit</button>
-    <button id="add-btn" style="display: none;">Cancel</button>
-    <%#= f.text_area :fields %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
+    <%= render 'fields'%>
   </div>
 <% end %>
