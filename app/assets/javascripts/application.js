@@ -13,4 +13,4 @@
 //= require jquery
 //= require jquery_ujs
 //= require_tree .
-//= require list.js/dist/list.min
+//= require list.js/dist/list

@@ -16,6 +16,7 @@
   <div class="field">
     <%= f.label :category %><br>
     <%= f.collection_select(:category_id, Category.all, :id, :name, {:include_blank => true, :require=>'require'}) %>
+    <a class="btn btn-default" href="javascript:void(0)" role="button" onclick="add_category()">Add category</a>
   </div>
   <div class="field">
     <%= f.label :name %><br>
@@ -23,10 +24,53 @@
   </div>
   <div class="field">
     <%= f.label :slug %><br>
-    <%= f.text_field :slug %>
+    <%= f.text_field :slug, :require=>'require' %>
   </div>
   <div class="field">
     <%= f.label :fields %><br>
-    <%= render 'fields'%>
+    <%= render partial:'fields', locals:{fields:@sub_category.fields}%>
   </div>
 <% end %>
+<script>
+function add_category(){
+  var nme_category = prompt("Enter category name", "");
+  if (nme_category != null){
+    $.ajax({
+      url: "/add_category?nme_category="+nme_category,
+    }).done(function(data){
+      if (data.errors)
+        alert(data.errors);
+      else{
+        $('#sub_category_category_id').append($('<option>', data ));
+        $('#sub_category_category_id').val(data.value);
+      }
+    }).fail(function(){
+    })
+    .always(function(){
+    });    
+    //422
+  }
+}
+/*
+$('input[type="submit"]').click(function(e){
+  $('form:first').submit();
+  return false;
+});
+$("form").submit(function(e){
+  if (reason == 'user') {
+    e.preventDefault();
+    var address = $(this).find('.address').val();
+    geocoder.geocode( { 'address': unescape(address)}, function(results, status) 
+    {
+      if (status == google.maps.GeocoderStatus.OK) 
+      {
+        $(".latSelector input:hidden").val(results[0].geometry.location.lat());
+        $(".lngSelector input:hidden").val(results[0].geometry.location.lng());
+        reason = 'callback';
+        $("form input:submit").click();
+      }
+    });
+  }
+});
+*/
+</script>

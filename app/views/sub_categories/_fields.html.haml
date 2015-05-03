@@ -1,17 +1,17 @@
-#contacts
-  %table.table
+#fields
+  %table.table#input
     %td.order
-      %input{type:"hidden", id:"id-field"}
-      %input#order-field{type:"text", placeholder:"order", required:'required'}
+      %input#id-field{type:"hidden"}
+      %input#order-field{type:"number", placeholder:"order", class:'required'}
     %td.title
-      %input#title-field{type:"text", placeholder:"title", required:'required'}
+      %input#title-field{type:"text", placeholder:"title", class:'required'}
     %td.type
-      %input#type-field{type:"text", placeholder:"type", required:'required'}
+      %input#type-field{type:"text", placeholder:"type", class:'required'}
     %td.values
       %input#values-field{type:"text", placeholder:"values"}
     %td.add
-      %button.add-btn Add
-      %button.edit-btn Edit  
+      %button#add-btn{type:"button"} Add
+      %button#edit-btn{type:"button"} Edit  
   %table.table
     %thead
       %tr
@@ -21,87 +21,145 @@
         %th.sort{:'data-sort'=>"values"} values
         %th.sort{colspan:"2"}
     %tbody.list
+    - (@sub_category.fields||Field.values_pattern).each_with_index do |field, index|
       %tr
-        %td.id{style:"display:none;"} 1
-        %td.order Jonny
-        %td.title 27
-        %td.type Stockholm
-        %td.values Stockholm
+        %td.id{style:"display:none;"}= index
+        %td.order= field["order"]
+        %td.title= field["title"]
+        %td.type= field["type"]
+        %td.values= field["values"]  
         %td.edit
-          %button.edit-item-btn Edit
+          %button.edit-item-btn{type:"button"} Edit
         %td.remove
-          %button.remove-item-btn Remove
+          %button.remove-item-btn{type:"button"} Remove
 
 :javascript
+  //about List
   var options = {
-      valueNames: [ 'id', 'order', 'title', 'type', 'values' ]
+      valueNames: ['id', 'order', 'title', 'type', 'values']
     };
 
     // Init list
-    var contactList = new List('contacts', options);
+    /*
+    var obj_fields = #{raw fields.to_json};
+    var field_list = (obj_fields==null)?
+      new List('fields', options)
+      new List('fields', options, obj_fields);
+    */
+    var field_list = new List('fields', options);
 
     var idField = $('#id-field'),
-        nameField = $('#order-field'),
-        ageField = $('#title-field'),
-        cityField = $('#type-field'),
-        cityFieldd = $('#values-field'),
+        order = $('#order-field'),
+        title = $('#title-field'),
+        type = $('#type-field'),
+        values = $('#values-field'),
         addBtn = $('#add-btn'),
         editBtn = $('#edit-btn').hide(),
         removeBtns = $('.remove-item-btn'),
         editBtns = $('.edit-item-btn');
 
     // Sets callbacks to the buttons in the list
-    refreshCallbacks();
+    refresh();
 
-    addBtn.click(function() {
-      contactList.add({
+    //$('#input > tbody > tr > td > input')
+    addBtn.click(function(){
+      //Required
+      var inputs = $('#input > tbody > tr > td > input.required');
+      if ($.grep(inputs, function(i){return i.value==''}).length > 0){
+        alert('Required field');
+        return false;
+      }
+      params = {
         id: Math.floor(Math.random()*110000),
-        name: nameField.val(),
-        age: ageField.val(),
-        city: cityField.val()
-      });
-      clearFields();
-      refreshCallbacks();
+        order: order.val(),
+        title: title.val(),
+        type: type.val(),
+        values: values.val()
+      }      
+      field_list.add(params);
+      set_hidden_fields(params, 'add');
+      clear_fields();
+      refresh();
     });
 
     editBtn.click(function() {
-      var item = contactList.get('id', idField.val())[0];
-      item.values({
+      var item = field_list.get('id', idField.val())[0];
+      params = {
         id:idField.val(),
-        name: nameField.val(),
-        age: ageField.val(),
-        city: cityField.val()
-      });
-      clearFields();
+        order: order.val(),
+        title: title.val(),
+        type: type.val(),
+        values: values.val()
+      }
+      item.values(params);
+      //set_hidden_fields(params, 'edit');
+      clear_fields();
       editBtn.hide();
       addBtn.show();
     });
 
-    function refreshCallbacks() {
+    function refresh() {
+      //$('tbody.list>tr:first>td>button.remove-item-btn').remove();
       // Needed to add new buttons to jQuery-extended object
       removeBtns = $(removeBtns.selector);
       editBtns = $(editBtns.selector);
       
-      removeBtns.click(function() {
+      removeBtns.click(function(){
         var itemId = $(this).closest('tr').find('.id').text();
-        contactList.remove('id', itemId);
+        field_list.remove('id', itemId);
       });
       
-      editBtns.click(function() {
+      editBtns.click(function(){
         var itemId = $(this).closest('tr').find('.id').text();
-        var itemValues = contactList.get('id', itemId)[0].values();
+        console.log(itemId);
+        var itemValues = field_list.get('id', itemId)[0].values();
         idField.val(itemValues.id);
-        nameField.val(itemValues.name);
-        ageField.val(itemValues.age);
-        cityField.val(itemValues.city);
+        order.val(itemValues.order);''
+        title.val(itemValues.title);
+        type.val(itemValues.type);
+        values.val(itemValues.values);
         
         editBtn.show();
         addBtn.hide();
       });
     }
 
-    function clearFields() {
-      nameField.val('');
-      ageField.val('');
-      cityField.val('');
+    function clear_fields() {
+      order.val('');
+      title.val('');
+      type.val('');
+      values.val('');
     }
+    function set_hidden_fields(p, operation){
+      $('form:first').append(
+        '<input type="hidden" id="order" name="fields['+p.id+'][order]" value="'+p.order+'">'
+      );
+      $('form:first').append(
+        '<input type="hidden" id="title" name="fields['+p.id+'][title]" value="'+p.title+'">'
+      );
+      $('form:first').append(
+        '<input type="hidden" id="type" name="fields['+p.id+'][type]" value="'+p.type+'">'
+      );
+      $('form:first').append(
+        '<input type="hidden" id="value" name="fields['+p.id+'][value]" value="'+p.values+'">'
+      );
+    }
+    //Override templater.create function
+    /*
+    field_list.templater.create = function(item){
+      if (item.elm !== undefined) {
+        return false;
+      }
+      console.log('override');
+      var newItem = self.itemSource.cloneNode(true);
+      newItem.removeAttribute('id');
+      item.elm = newItem;
+      templater.set(item, item.values());
+      return true;
+    };
+    this.remove = function(item) {
+      if (item.elm.parentNode === list.list) {
+        list.list.removeChild(item.elm);
+      }
+    };    
+    */

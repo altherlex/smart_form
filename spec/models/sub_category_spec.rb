@@ -2,8 +2,22 @@ require 'rails_helper'
 
 RSpec.describe SubCategory, type: :model do
   context "crud tests" do
+    before :all do
+      @params = {"fields"=>{
+        "3001"=>{"order"=>"1", "title"=>"aa", "type"=>"a", "value"=>""}, 
+        "37922"=>{"order"=>"2", "title"=>"q", "type"=>"qq", "value"=>""}
+      }}
+      @sub_category = FactoryGirl.build :sub_category
+    end
+
     it "slug can't be null" do 
       expect(SubCategory.new.save).to be false
+    end
+
+    it "insert fields" do 
+      @sub_category.fields = @params["fields"].map{|k,i| i}
+      expect( @sub_category.save ).to be true
+      expect( @sub_category.reload.fields).to be @params["fields"].map{|k,i| i}
     end
   end
   context "with fields" do

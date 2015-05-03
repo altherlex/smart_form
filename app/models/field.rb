@@ -6,6 +6,10 @@ class Field
     @type = attr[:type]
     @values = attr[:values]
   end
+
+  def self.values_pattern
+    [{'order'=>0, 'title'=>'My first field', 'type'=>'text'}]
+  end
   
   def as_json_with_indifferent_access
     self.as_json_without_indifferent_access.with_indifferent_access

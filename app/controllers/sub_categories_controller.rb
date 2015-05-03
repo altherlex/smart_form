@@ -23,6 +23,9 @@ class SubCategoriesController < ApplicationController
   def create
     @sub_category = SubCategory.new(sub_category_params)
 
+    fields = params["fields"].map{|k,i| i}
+    @sub_category.fields = fields
+    
     if @sub_category.save
       redirect_to @sub_category, notice: 'Sub category was successfully created.'
     else
@@ -53,6 +56,6 @@ class SubCategoriesController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def sub_category_params
-      params.require(:sub_category).permit(:category, :name, :slug, :fields)
+      params.require(:sub_category).permit(:category_id, :name, :slug, :fields)
     end
 end
