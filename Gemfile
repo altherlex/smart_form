@@ -46,3 +46,4 @@ end
 gem 'tzinfo'
 gem 'tzinfo-data'
 gem 'haml'
+gem 'rspec-html-matchers'
