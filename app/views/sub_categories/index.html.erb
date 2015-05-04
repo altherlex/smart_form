@@ -19,7 +19,7 @@
           <%=link_to sub_category.category.name, sub_category.category %>
         </td>
         <td><%= sub_category.name %></td>
-        <td><%= link_to "#{sub_category.category.name}/#{sub_category.slug}", sub_category %></td>
+        <td><%= link_to "#{sub_category.category.slug}/#{sub_category.slug}", smart_form_path(sub_category.category.slug,sub_category.slug) %></td>
         <td><%= link_to 'Edit', edit_sub_category_path(sub_category) %></td>
         <td><%= link_to 'Destroy', sub_category, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>

@@ -21,17 +21,23 @@
         %th.sort{:'data-sort'=>"values"} values
         %th.sort{colspan:"2"}
     %tbody.list
-    - (@sub_category.fields||Field.values_pattern).each_with_index do |field, index|
-      %tr
-        %td.id{style:"display:none;"}= index
-        %td.order= field["order"]
-        %td.title= field["title"]
-        %td.type= field["type"]
-        %td.values= field["values"]  
-        %td.edit
-          %button.edit-item-btn{type:"button"} Edit
-        %td.remove
-          %button.remove-item-btn{type:"button"} Remove
+      - (@sub_category.fields.empty? ? Field.values_pattern : @sub_category.fields).each_with_index do |field, index|
+        %tr
+          %td.id{style:"display:none;"}= index
+          %td.order= field["order"]
+          %td.title= field["title"]
+          %td.type= field["type"]
+          %td.values= field["values"]  
+          %td.edit
+            %button.edit-item-btn{type:"button"} Edit
+          %td.remove
+            %button.remove-item-btn{type:"button"} Remove                
+
+- fields.each_with_index do |field, index|
+  =hidden_field_tag "fields[#{index}][order]", field['order'], class:index
+  =hidden_field_tag "fields[#{index}][title]", field['order'], class:index
+  =hidden_field_tag "fields[#{index}][type]", field['order'], class:index
+  =hidden_field_tag "fields[#{index}][values]", field['order'], class:index
 
 :javascript
   //about List
@@ -92,6 +98,7 @@
         values: values.val()
       }
       item.values(params);
+      // TODO: edit hidden
       //set_hidden_fields(params, 'edit');
       clear_fields();
       editBtn.hide();
@@ -99,7 +106,6 @@
     });
 
     function refresh() {
-      //$('tbody.list>tr:first>td>button.remove-item-btn').remove();
       // Needed to add new buttons to jQuery-extended object
       removeBtns = $(removeBtns.selector);
       editBtns = $(editBtns.selector);
@@ -107,11 +113,11 @@
       removeBtns.click(function(){
         var itemId = $(this).closest('tr').find('.id').text();
         field_list.remove('id', itemId);
+        $('.'+itemId).remove();
       });
       
       editBtns.click(function(){
         var itemId = $(this).closest('tr').find('.id').text();
-        console.log(itemId);
         var itemValues = field_list.get('id', itemId)[0].values();
         idField.val(itemValues.id);
         order.val(itemValues.order);''
@@ -132,16 +138,16 @@
     }
     function set_hidden_fields(p, operation){
       $('form:first').append(
-        '<input type="hidden" id="order" name="fields['+p.id+'][order]" value="'+p.order+'">'
+        '<input class="'+p.id+'" type="hidden" id="order" name="fields['+p.id+'][order]" value="'+p.order+'">'
       );
       $('form:first').append(
-        '<input type="hidden" id="title" name="fields['+p.id+'][title]" value="'+p.title+'">'
+        '<input class="'+p.id+'" type="hidden" id="title" name="fields['+p.id+'][title]" value="'+p.title+'">'
       );
       $('form:first').append(
-        '<input type="hidden" id="type" name="fields['+p.id+'][type]" value="'+p.type+'">'
+        '<input class="'+p.id+'" type="hidden" id="type" name="fields['+p.id+'][type]" value="'+p.type+'">'
       );
       $('form:first').append(
-        '<input type="hidden" id="value" name="fields['+p.id+'][value]" value="'+p.values+'">'
+        '<input class="'+p.id+'" type="hidden" id="value" name="fields['+p.id+'][value]" value="'+p.values+'">'
       );
     }
     //Override templater.create function

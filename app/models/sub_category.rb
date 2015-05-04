@@ -6,9 +6,9 @@ class SubCategory < ActiveRecord::Base
   validates :slug, presence: true
   validates :slug, uniqueness: true
 
-  #def fields=(value)
-  #  raise value.inspect
-  #end
+  def self.find_smart_form(slug_categoria, slug_subcategoria)
+    find(:first, join: :category, conditions:["category_name = ? and slug = ?", slug_categoria, slug_subcategoria])
+  end
 end
 
 #rails generate scaffold SubCategory category:integer name:string slug:string fields:text --skip

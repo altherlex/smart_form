@@ -22,9 +22,7 @@ class SubCategoriesController < ApplicationController
   # POST /sub_categories
   def create
     @sub_category = SubCategory.new(sub_category_params)
-
-    fields = params["fields"].map{|k,i| i}
-    @sub_category.fields = fields
+    @sub_category.fields = fields_params
     
     if @sub_category.save
       redirect_to @sub_category, notice: 'Sub category was successfully created.'
@@ -35,6 +33,8 @@ class SubCategoriesController < ApplicationController
 
   # PATCH/PUT /sub_categories/1
   def update
+    @sub_category.fields = fields_params
+    
     if @sub_category.update(sub_category_params)
       redirect_to @sub_category, notice: 'Sub category was successfully updated.'
     else
@@ -57,5 +57,13 @@ class SubCategoriesController < ApplicationController
     # Only allow a trusted parameter "white list" through.
     def sub_category_params
       params.require(:sub_category).permit(:category_id, :name, :slug, :fields)
+    end
+
+    def fields_params
+      if params["fields"].present? and params["fields"].is_a?(Array)
+        params["fields"].map{|k,i| i}
+      else
+        []
+      end
     end
 end
