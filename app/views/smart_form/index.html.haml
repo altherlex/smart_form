@@ -1,0 +1,6 @@
+%p#notice= notice
+%div.list-group
+  - @sub_categories.each do |sub_category|
+    %a.list-group-item{href:"#{smart_form_path(sub_category.category.slug,sub_category.slug)}"}
+      %h4.list-group-item-heading="#{sub_category.category.slug}/#{sub_category.slug}"
+      %p.list-group-item-text="Caterogy: #{sub_category.category.name} and SubCategory: #{sub_category.category.name}"

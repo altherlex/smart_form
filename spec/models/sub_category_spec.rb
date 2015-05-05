@@ -3,10 +3,6 @@ require 'rails_helper'
 RSpec.describe SubCategory, type: :model do
   before :each do
     @sub = FactoryGirl.build :pedreiro
-    factories_to_lint = FactoryGirl.factories.reject do |factory|
-      factory.name =~ /^field_/
-    end
-    @all_fields = FactoryGirl.lint factories_to_lint    
   end  
   context "crud tests" do
     before :all do

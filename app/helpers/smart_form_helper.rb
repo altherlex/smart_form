@@ -4,13 +4,17 @@ module SmartFormHelper
     #params = params.with_indifferent_access
     case params[:type].to_sym
       when :text
-        text_field_tag(name_2_variable(params[:title]), params[:value])
+        content_tag(:label, params[:title])+
+        text_field_tag(name_2_variable(params[:title]), params[:value], class:'form-control')
+      when :textarea
+        content_tag(:label, params[:title])+
+        text_area_tag(name_2_variable(params[:title]), params[:value], class:'form-control')
       when :select
-        #options = options_from_collection_for_select(@people, "id", "name", "1")
-        select_tag(name_2_variable(params[:title]), options_for_select(params[:values]), include_blank: true)
+        content_tag(:label, params[:title])+
+        select_tag(name_2_variable(params[:title]), options_for_select(params[:values]), include_blank:true, class:'form-control')
       when :checkbox
         params[:values].map do |value|
-          check_box_tag( name_2_variable(params[:title]), value, false, class: name_2_variable(params[:title]) )+value
+          check_box_tag( name_2_variable(params[:title]), value, false, class: name_2_variable(params[:title])+" form-control" )+value
         end.join('<br/>')
     #else
     end

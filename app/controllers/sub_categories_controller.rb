@@ -60,7 +60,7 @@ class SubCategoriesController < ApplicationController
     end
 
     def fields_params
-      if params["fields"].present? and params["fields"].is_a?(Array)
+      if params["fields"].present? #and params["fields"].is_a?(Array)
         params["fields"].map{|k,i| i}
       else
         []

@@ -7,7 +7,8 @@ class SubCategory < ActiveRecord::Base
   validates :slug, uniqueness: true
 
   def self.find_smart_form(slug_categoria, slug_subcategoria)
-    find(:first, join: :category, conditions:["category_name = ? and slug = ?", slug_categoria, slug_subcategoria])
+    joins(:category)
+    .where("categories.slug = ? and sub_categories.slug = ?", slug_categoria, slug_subcategoria)
   end
 end
 

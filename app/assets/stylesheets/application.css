@@ -14,3 +14,15 @@
  *= require_self
  *= require bootstrap/dist/css/bootstrap.min
  */
+ .form-step-area{
+  float: left;
+  display: block;
+  margin-right: 2.12766%;
+  width: 48.93617%;
+  float: none;
+  margin: 0 auto;
+  min-height: 0;
+}
+.center{
+  text-align: center;
+}

@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  root 'sub_categories#index'
+  root 'smart_form#index'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   # Example of named route that can be invoked with purchase_url(id: product.id)
   #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase
   get '/:slug_categoria/:slug_subcategoria/' => 'smart_form#show', as: :smart_form
+  get 'list' => 'smart_form#index', as: :list_smart_forms
 
   #match "/signup" => "users#new", :via => [:get]
   #get   "/signup" => "users#new"

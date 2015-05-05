@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20121230220019) do
+ActiveRecord::Schema.define(version: 20150505044527) do
 
   create_table "categories", force: :cascade do |t|
     t.text     "name"
@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(version: 20121230220019) do
     t.text     "fields"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text     "title"
   end
 
   add_index "sub_categories", ["category_id"], name: "index_sub_categories_on_category_id"

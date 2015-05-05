@@ -1,38 +1,11 @@
-= mount_form_fields @sub_category.fields
+.page-header
+  %h3.center=@sub_category.title
+=link_to "back", "javascript:window.history.back();"
+%div.panel.panel-default.form-step-area
+  %div.panel-body
+    %form
+      - @sub_category.fields.each do |field|
+        %div.form-group
+          = mount_form_fields(field)
 
-= link_to 'Edit |', edit_sub_category_path(@sub_category)
-= link_to 'Back', sub_categories_path
-
-%p#notice= notice
-
-%p
-  %strong Category
-  =link_to @sub_category.category.name, @sub_category.category
-
-%p
-  %strong Name:
-  = @sub_category.name
-
-%p
-  %strong Slug:
-  = @sub_category.slug
-
-%p
-  %strong Fields:
-
-#fields
-  %table.table
-    %thead
-      %tr
-        %th.sort{:'data-sort'=>"order"} order
-        %th.sort{:'data-sort'=>"title"} title
-        %th.sort{:'data-sort'=>"type"} type
-        %th.sort{:'data-sort'=>"values"} values
-        %th.sort{colspan:"2"}
-    %tbody.list
-    - @sub_category.fields.each do |field|
-      %tr
-        %td.order= field["order"]
-        %td.title= field["title"]
-        %td.type= field["type"]
-        %td.values= field["values"]
+      %button.btn.btn-success.btn-lg{type:"button"} Continuar

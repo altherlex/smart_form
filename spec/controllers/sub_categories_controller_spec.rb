@@ -24,7 +24,13 @@ RSpec.describe SubCategoriesController, type: :controller do
   # SubCategory. As you add validations to SubCategory, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
+    {
+      "utf8"=>"✓", 
+      "authenticity_token"=>"9ZAoUUkfpR1AydhsivPuB/16x5u3Awdb/yVj7EdWo+pK4IeZP9aFXyThDFau8Epqdzv2tfOL+UnEEk48EsNoow==", 
+      "commit"=>"Create Sub category",
+      "sub_category"=>{"category_id"=>"8", "name"=>"a", "slug"=>"a"}, 
+      "fields"=>{"66823"=>{"order"=>"1", "title"=>"aa", "type"=>"a", "value"=>""}}
+    }
   }
 
   let(:invalid_attributes) {
