@@ -8,7 +8,7 @@
     %td.type
       %input#type-field{type:"text", placeholder:"type", class:'required'}
     %td.values
-      %input#values-field{type:"text", placeholder:"values"}
+      %input#values-field{type:"text", placeholder:"value1, value2, value3"}
     %td.add
       %button#add-btn{type:"button"} Add
       %button#edit-btn{type:"button"} Edit  
@@ -151,12 +151,12 @@
       );
     }
     //Override templater.create function
-    /*
+    /*    
     field_list.templater.create = function(item){
       if (item.elm !== undefined) {
         return false;
       }
-      console.log('override');
+      //console.log(a=newItem);
       var newItem = self.itemSource.cloneNode(true);
       newItem.removeAttribute('id');
       item.elm = newItem;

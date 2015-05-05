@@ -16,38 +16,40 @@ RSpec.describe SmartFormHelper, type: :helper do
       expect(mount_form_fields).to eq("")
     end
     it "for text" do
-      #@sub_category.fields
       field_text = @all_fields.detect{|i| i.type=='text'}
-      result = "<input type='text' name='text' id='text'/>"
-      expect(mount_form_fields(field_text.to_into)).to eq(result)
+      expect(mount_form_fields(field_text.to_into)).to have_tag(:label) do
+        with_text field_text.title
+      end
+      expect(mount_form_fields(field_text.to_into)).to have_tag(:input, with:{type:'text', name:'quantos-convidados-sao-esperados'})
+    end
+    it "for textarea" do
+      field_text = @all_fields.detect{|i| i.type=='textarea'}
+      expect(mount_form_fields(field_text.to_into)).to have_tag(:label) do
+        with_text field_text.title
+      end
+      expect(mount_form_fields(field_text.to_into)).to have_tag(:textarea, with:{name:"informacoes-adicionais"})
     end
     it "for select" do
       field_select = @all_fields.detect{|i| i.type=='select'}
-      result = %{
-        <select name='qual-e-o-tipo-de-evento' id='qual-e-o-tipo-de-evento'>
-          <option value='></option>
-          <option value='Bodas'>Bodas</option>
-          <option value='Formatura'>Formatura</option>
-          <option value='Aniversário - Adulto'>Aniversário - Adulto</option>
-          <option value='Aniversário - Infantil'>Aniversário - Infantil</option>
-          <option value='Debutante'>Debutante</option>
-          <option value='Casamento'>Casamento</option>
-          <option value='Evento corporativo'>Evento corporativo</option>
-          <option value='Outros'>Outros</option>
-        </select>
-      }
-      expect(mount_form_fields(field_select.to_into)).to eq(result.squish )
+      expect(mount_form_fields(field_select.to_into)).to have_tag(:label) do
+        with_text field_select.title
+      end
+      expect(mount_form_fields(field_select.to_into)).to have_tag('select', with:{name:'qual-e-o-tipo-de-evento'}) do
+        with_tag "option"
+        with_tag "option", with:{value:'Bodas'}
+        with_tag "option", with:{value:'Formatura'}
+        with_tag "option", with:{value:'Aniversário - Adulto'}
+        with_tag "option", with:{value:'Aniversário - Infantil'}
+        with_tag "option", with:{value:'Debutante'}
+        with_tag "option", with:{value:'Casamento'}
+        with_tag "option", with:{value:'Evento corporativo'}
+        with_tag "option", with:{value:'Outros'}        
+      end
     end
     it "for checkbox" do
       field_checkbox = @all_fields.detect{|i| i.type=='checkbox'}
-      result = %{
-        <input type='checkbox' name='qual-profissional-voce-precisa' id='qual-profissional-voce-precisa' value='Garçom' class='qual-profissional-voce-precisa'/>Garçom
-        <br/>
-        <input type='checkbox' name='qual-profissional-voce-precisa' id='qual-profissional-voce-precisa' value='Garçonete' class='qual-profissional-voce-precisa'/>Garçonete
-        <br/>
-        <input type='checkbox' name='qual-profissional-voce-precisa' id='qual-profissional-voce-precisa' value='Copeira' class='qual-profissional-voce-precisa'/>Copeira
-      }
-      expect(mount_form_fields(field_checkbox.to_into).squish.gsub(" ", "")).to eq(result.squish.gsub(" ", ""))
+      #expect(mount_form_fields(field_checkbox.to_into).squish.gsub(" ", "")).to eq(result.squish.gsub(" ", ""))
+      expect(mount_form_fields(field_checkbox.to_into)).to have_tag('input', with:{name:"qual-profissional-voce-precisa[0]", type:'checkbox', value:'Garçom'})
     end    
   end
 end

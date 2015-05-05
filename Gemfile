@@ -42,8 +42,8 @@ group :development, :test do
   gem 'factory_girl_rails', "~> 4.0"
   gem "database_cleaner"
   gem "thin"
+  gem 'rspec-html-matchers'
 end
 gem 'tzinfo'
 gem 'tzinfo-data'
 gem 'haml'
-gem 'rspec-html-matchers'

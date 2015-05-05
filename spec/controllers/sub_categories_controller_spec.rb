@@ -19,28 +19,45 @@ require 'rails_helper'
 # that an instance is receiving a specific message.
 
 RSpec.describe SubCategoriesController, type: :controller do
-
-  # This should return the minimal set of attributes required to create a valid
-  # SubCategory. As you add validations to SubCategory, be sure to
-  # adjust the attributes here as well.
   let(:valid_attributes) {
     {
       "utf8"=>"✓", 
       "authenticity_token"=>"9ZAoUUkfpR1AydhsivPuB/16x5u3Awdb/yVj7EdWo+pK4IeZP9aFXyThDFau8Epqdzv2tfOL+UnEEk48EsNoow==", 
       "commit"=>"Create Sub category",
-      "sub_category"=>{"category_id"=>"8", "name"=>"a", "slug"=>"a"}, 
-      "fields"=>{"66823"=>{"order"=>"1", "title"=>"aa", "type"=>"a", "value"=>""}}
-    }
+      "sub_category"=>{"category_id"=>"8", "name"=>"a", "slug"=>"a"}.with_indifferent_access, 
+      "fields"=>
+        {
+          "66823"=> {"order"=>"1", "title"=>"Description", "type"=>"textarea", "value"=>""},
+          "66825"=>
+            { "order"=>3,
+              "title"=>"Qual é o tipo de evento?",
+              "type"=>"select", 
+              "values"=>"Bodas, Formatura, Aniversário - Adulto, Aniversário - Infantil, Debutante, Casamento, Evento corporativo, Outros"
+            }
+        }
+    }.with_indifferent_access
   }
 
   let(:invalid_attributes) {
     skip("Add a hash of attributes invalid for your model")
   }
 
-  # This should return the minimal set of values that should be in the session
-  # in order to pass any filters (e.g. authentication) defined in
-  # SubCategoriesController. Be sure to keep this updated too.
   let(:valid_session) { {} }
+
+  describe "fields_params method" do
+    it "with valid values" do 
+      controller.params = {"fields"=>
+        {"66823"=>
+          { "order"=>3,
+            "title"=>"Qual é o tipo de evento?",
+            "type"=>"select", 
+            "values"=>"Bodas, Formatura, Aniversário - Adulto, Aniversário - Infantil, Debutante, Casamento, Evento corporativo, Outros"
+          }
+        }
+      }
+      expect( controller.send(:fields_params).first["values"] ).to eq(["Bodas", "Formatura", "Aniversário - Adulto", "Aniversário - Infantil", "Debutante", "Casamento", "Evento corporativo", "Outros"])
+    end
+  end
 
   describe "GET #index" do
     it "assigns all sub_categories as @sub_categories" do
@@ -76,6 +93,8 @@ RSpec.describe SubCategoriesController, type: :controller do
   describe "POST #create" do
     context "with valid params" do
       it "creates a new SubCategory" do
+        #expect(response).to have_http_status(:created)
+        #raise post(:create, {:sub_category => valid_attributes}).inspect
         expect {
           post :create, {:sub_category => valid_attributes}, valid_session
         }.to change(SubCategory, :count).by(1)

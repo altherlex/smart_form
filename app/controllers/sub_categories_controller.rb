@@ -23,7 +23,7 @@ class SubCategoriesController < ApplicationController
   def create
     @sub_category = SubCategory.new(sub_category_params)
     @sub_category.fields = fields_params
-    
+
     if @sub_category.save
       redirect_to @sub_category, notice: 'Sub category was successfully created.'
     else
@@ -59,9 +59,13 @@ class SubCategoriesController < ApplicationController
       params.require(:sub_category).permit(:category_id, :name, :slug, :fields)
     end
 
-    def fields_params
+  protected 
+    def fields_params(p=params)
       if params["fields"].present? #and params["fields"].is_a?(Array)
-        params["fields"].map{|k,i| i}
+        fields = params["fields"].map{|k,i| i}
+        fields.each do |field|
+          field["values"] = field["values"].split(',').map(&:strip) if field["values"].present?
+        end
       else
         []
       end

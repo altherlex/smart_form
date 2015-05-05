@@ -13,8 +13,8 @@ module SmartFormHelper
         content_tag(:label, params[:title])+
         select_tag(name_2_variable(params[:title]), options_for_select(params[:values]), include_blank:true, class:'form-control')
       when :checkbox
-        params[:values].map do |value|
-          check_box_tag( name_2_variable(params[:title]), value, false, class: name_2_variable(params[:title])+" form-control" )+value
+        params[:values].map.with_index do |value, index|
+          check_box_tag( name_2_variable(params[:title])+'['+index.to_s+']', value, false, class: name_2_variable(params[:title])+" form-control" )+value
         end.join('<br/>')
     #else
     end
