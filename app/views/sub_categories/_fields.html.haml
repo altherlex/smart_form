@@ -24,10 +24,10 @@
       - (@sub_category.fields.empty? ? Field.values_pattern : @sub_category.fields).each_with_index do |field, index|
         %tr
           %td.id{style:"display:none;"}= index
-          %td.order= field["order"]
-          %td.title= field["title"]
-          %td.type= field["type"]
-          %td.values= field["values"]  
+          %td.order= (field["order"]||field[:order])
+          %td.title= (field["title"]||field[:title])
+          %td.type= (field["type"]||field[:type])
+          %td.values= (field["values"]||field[:values]).try(:join, (","))
           %td.edit
             %button.edit-item-btn{type:"button"} Edit
           %td.remove
