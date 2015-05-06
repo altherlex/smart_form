@@ -1,5 +1,6 @@
 = link_to 'Edit |', edit_sub_category_path(@sub_category)
-= link_to 'Back', sub_categories_path
+= link_to 'Back |', sub_categories_path
+=link_to 'View smart-form',smart_form_path(@sub_category.category.slug,@sub_category.slug)
 
 - if notice
   %p#notice.alert.alert-info= notice
@@ -7,7 +8,9 @@
 %p
   %strong Category
   =link_to @sub_category.category.name, @sub_category.category
-
+%p
+  %strong Title:
+  = @sub_category.title
 %p
   %strong Name:
   = @sub_category.name
@@ -31,7 +34,7 @@
     %tbody.list
     - @sub_category.fields.each do |field|
       %tr
-        %td.order= field["order"]
-        %td.title= field["title"]
-        %td.type= field["type"]
-        %td.values= field["values"]
+        %td.order= (field["order"]||field[:order])
+        %td.title= (field["title"]||field[:title])
+        %td.type= (field["type"]||field[:type])
+        %td.values= (field["values"]||field[:values]).try(:join, (","))

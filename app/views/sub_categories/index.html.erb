@@ -5,6 +5,7 @@
 <table class='table table-condensed table-hover'>
   <thead>
     <tr>
+      <th colspan="1"></th>
       <th>Category</th>
       <th>Name</th>
       <th>Smart Form (/:slug_categoria/:slug_subcategoria/)</th>
@@ -15,12 +16,13 @@
   <tbody>
     <% @sub_categories.each do |sub_category| %>
       <tr>
+        <td><%= link_to 'Edit', edit_sub_category_path(sub_category) %></td>
         <td>
           <%=link_to sub_category.category.name, sub_category.category %>
         </td>
         <td><%= sub_category.name %></td>
         <td><%= link_to "#{sub_category.category.slug}/#{sub_category.slug}", smart_form_path(sub_category.category.slug,sub_category.slug) %></td>
-        <td><%= link_to 'Edit', edit_sub_category_path(sub_category) %></td>
+        <td><%= link_to 'Show', sub_category_path(sub_category) %></td>
         <td><%= link_to 'Destroy', sub_category, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>

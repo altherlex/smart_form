@@ -21,7 +21,7 @@
         %th.sort{:'data-sort'=>"values"} values
         %th.sort{colspan:"2"}
     %tbody.list
-      - (@sub_category.fields.empty? ? Field.values_pattern : @sub_category.fields).each_with_index do |field, index|
+      - fields.each_with_index do |field, index|
         %tr
           %td.id{style:"display:none;"}= index
           %td.order= (field["order"]||field[:order])
@@ -34,10 +34,10 @@
             %button.remove-item-btn{type:"button"} Remove                
 
 - fields.each_with_index do |field, index|
-  =hidden_field_tag "fields[#{index}][order]", field['order'], class:index
-  =hidden_field_tag "fields[#{index}][title]", field['order'], class:index
-  =hidden_field_tag "fields[#{index}][type]", field['order'], class:index
-  =hidden_field_tag "fields[#{index}][values]", field['order'], class:index
+  =hidden_field_tag "fields[#{index}][order]", (field['order']||field[:order]), class:index
+  =hidden_field_tag "fields[#{index}][title]", (field['title']||field[:title]), class:index
+  =hidden_field_tag "fields[#{index}][type]", (field['type']||field[:type]), class:index
+  =hidden_field_tag "fields[#{index}][values]", (field['values']||field[:values]).try(:join, (',')), class:index
 
 :javascript
   //about List
@@ -83,7 +83,7 @@
         values: values.val()
       }      
       field_list.add(params);
-      set_hidden_fields(params, 'add');
+      set_hidden_fields(params);
       clear_fields();
       refresh();
     });
@@ -99,7 +99,7 @@
       }
       item.values(params);
       // TODO: edit hidden
-      //set_hidden_fields(params, 'edit');
+      set_hidden_fields(params);
       clear_fields();
       editBtn.hide();
       addBtn.show();
@@ -137,6 +137,9 @@
       values.val('');
     }
     function set_hidden_fields(p, operation){
+      //if already exists... so: EDT
+      $('.'+p.id).remove();
+
       $('form:first').append(
         '<input class="'+p.id+'" type="hidden" id="order" name="fields['+p.id+'][order]" value="'+p.order+'">'
       );
@@ -147,7 +150,7 @@
         '<input class="'+p.id+'" type="hidden" id="type" name="fields['+p.id+'][type]" value="'+p.type+'">'
       );
       $('form:first').append(
-        '<input class="'+p.id+'" type="hidden" id="value" name="fields['+p.id+'][value]" value="'+p.values+'">'
+        '<input class="'+p.id+'" type="hidden" id="values" name="fields['+p.id+'][values]" value="'+p.values+'">'
       );
     }
     //Override templater.create function

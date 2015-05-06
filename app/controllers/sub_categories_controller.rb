@@ -56,7 +56,7 @@ class SubCategoriesController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def sub_category_params
-      params.require(:sub_category).permit(:category_id, :name, :slug, :fields)
+      params.require(:sub_category).permit(:category_id, :name, :slug, :fields, :title)
     end
 
   protected 
@@ -64,7 +64,9 @@ class SubCategoriesController < ApplicationController
       if params["fields"].present? #and params["fields"].is_a?(Array)
         fields = params["fields"].map{|k,i| i}
         fields.each do |field|
-          field["values"] = field["values"].split(',').map(&:strip) if field["values"].present?
+          if field["values"].present?
+            field["values"] = field["values"].split(',').map(&:strip)
+          end
         end
       else
         []

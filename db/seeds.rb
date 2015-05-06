@@ -1,9 +1,44 @@
 #encoding: utf-8
+Category.delete_all
+SubCategory.delete_all
 
-Category.create(name: "Reformas e Reparos", slug: "reformas-e-reparos").tap do |category|
-  category.sub_categories.create(name: "Pintor", slug: "pintor")
-  category.sub_categories.create(name: "Pedreiro", slug: "pedreiro")
-end
+pedreiro_title = %{
+  Encontre pedreiros para obras e reformas de casas, apartamentos, sala, cozinhas, banheiros, quartos, acabamentos, instalações e encanamento.
+}
+pintor_title = %{
+  Encontre pintores especializados em pintura de paredes, com ou sem textura, para reforma de casas, apartamentos, escritórios, cozinha, sala, banheiro, etc.
+}
+
+pedreiro_field = [
+{
+  order:0,
+  title:"Qual é o tipo de serviço?",
+  type:"select",
+  values:["Construção", "Reforma de Telhados", "Reforma de Pisos", "Reforma de paredes e estruturas", "Outros", "Reforma de portas e janelas"]
+},
+{
+  order:1,
+  title:"Para quando você precisa deste serviço?",
+  type:"select",
+  values:["Canto", "Piano", "Violino", "Bateria", "Violão e Guitarra", "Piano e Teclado", "Sopro", "Mixagem/DJ", "Teclado"]
+},
+{ order:3, title:"Informações Adicionais", type:"textarea"}]
+
+
+pintor_field = [
+{
+  order:0,
+  title:"O que será pintado?",
+  type:"select",
+  values:["Móveis", "Imóveis"]
+},
+{
+  order:1,
+  title:"Para quando você precisa deste serviço?",
+  type:"select",
+  values:["Hoje ou nos próximos dias", "Nos próximos 30 dias", "Nos próximos 3 meses", "Ainda não tenho previsão"]
+},
+{ order:3, title:"Informações Adicionais", type:"textarea"}]
 
 musica_field = [
 {
@@ -43,6 +78,10 @@ idioma_fields = [
 { order:2, title:"Informações Adicionais", type:"textarea" }
 ]
 
+Category.create(name: "Reformas e Reparos", slug: "reformas-e-reparos").tap do |category|
+  category.sub_categories.create(title:pintor_title, name: "Pintor", slug: "pintor", fields:pedreiro_field)
+  category.sub_categories.create(title:pedreiro_title, name: "Pedreiro", slug: "pedreiro", fields:pintor_field)
+end
 
 Category.create(name: "Aulas", slug: "aulas").tap do |category|
   category.sub_categories.create(title:"Encontre os melhores Professores de Música", name: "Música", slug: "musica", fields:musica_field)

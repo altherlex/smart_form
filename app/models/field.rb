@@ -8,7 +8,7 @@ class Field
   end
 
   def self.values_pattern
-    [{'order'=>0, 'title'=>'My first field', 'type'=>'text'}]
+    [{'order'=>0, 'title'=>'Informações Adicionais', 'type'=>'textarea'}]
   end
   
   def as_json_with_indifferent_access

@@ -4,7 +4,7 @@
 %div.panel.panel-default.form-step-area
   %div.panel-body
     %form
-      - @sub_category.fields.each do |field|
+      - @sub_category.fields.sort_by{|i| i[:order]}.each do |field|
         %div.form-group
           = mount_form_fields(field)
 
